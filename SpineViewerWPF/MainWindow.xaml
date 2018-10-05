@@ -41,9 +41,11 @@
         <Label Content="FrameHeight：" HorizontalAlignment="Left" Margin="10,352,0,0" VerticalAlignment="Top"/>
         <Label Name="lb_Height" Content="" HorizontalAlignment="Left" Margin="107,352,0,0" VerticalAlignment="Top"/>
         <Label Content="PosX：" HorizontalAlignment="Left" Margin="10,375,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="tb_PosX" HorizontalAlignment="Left" Height="15" Margin="58,381,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="71"  TextChanged="tb_PosX_TextChanged" InputMethod.IsInputMethodEnabled="False" MaxLength="3" RenderTransformOrigin="0.458,2.5" />
         <Label Content="PosY：" HorizontalAlignment="Left" Margin="10,394,0,0" VerticalAlignment="Top"/>
-        <Label Name="lb_PosX" Content="" HorizontalAlignment="Left" Margin="58,375,0,0" VerticalAlignment="Top"/>
-        <Label Name="lb_PosY" Content="" HorizontalAlignment="Left" Margin="58,394,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="tb_PosY" HorizontalAlignment="Left" Height="15" Margin="58,400,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="71"  TextChanged="tb_PosY_TextChanged" InputMethod.IsInputMethodEnabled="False" MaxLength="3" RenderTransformOrigin="0.458,2.5" />
+        <!-- <Label Name="lb_PosX" Content="" HorizontalAlignment="Left" Margin="58,375,0,0" VerticalAlignment="Top"/> -->
+        <!--<Label Name="lb_PosY" Content="" HorizontalAlignment="Left" Margin="58,394,0,0" VerticalAlignment="Top"/> -->
         <GroupBox Header="Gif Quality" HorizontalAlignment="Left" Height="54" Margin="7,424,0,0" VerticalAlignment="Top" Width="119">
             <ComboBox x:Name="cb_gif_q" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="94" SelectionChanged="cb_gif_q_SelectionChanged" >
                 <ComboBoxItem Content="Default" IsSelected="True"/>

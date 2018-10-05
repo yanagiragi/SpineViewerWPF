@@ -52,8 +52,13 @@ namespace SpineViewerWPF
             lb_Scale.SetBinding(Label.ContentProperty, new Binding() { Source = App.GV, Path = new PropertyPath("Scale") });
             lb_Width.SetBinding(ContentProperty, new Binding() { Source = App.GV, Path = new PropertyPath("FrameWidth") });
             lb_Height.SetBinding(ContentProperty, new Binding() { Source = App.GV, Path = new PropertyPath("FrameHeight") });
-            lb_PosX.SetBinding(ContentProperty, new Binding() { Source = App.GV, Path = new PropertyPath("PosX") });
-            lb_PosY.SetBinding(ContentProperty, new Binding() { Source = App.GV, Path = new PropertyPath("PosY") });
+
+            //lb_PosX.SetBinding(ContentProperty, new Binding() { Source = App.GV, Path = new PropertyPath("PosX") });
+            //lb_PosY.SetBinding(ContentProperty, new Binding() { Source = App.GV, Path = new PropertyPath("PosY") });
+
+            tb_PosX.SetBinding(TextBox.TextProperty, new Binding() { Source = App.GV, Path = new PropertyPath("PosX") });
+            tb_PosY.SetBinding(TextBox.TextProperty, new Binding() { Source = App.GV, Path = new PropertyPath("PosY") });
+
             chb_Alpha.SetBinding(CheckBox.IsCheckedProperty, new Binding() { Source = App.GV, Path = new PropertyPath("Alpha") });
             chb_IsLoop.SetBinding(CheckBox.IsCheckedProperty, new Binding() { Source = App.GV, Path = new PropertyPath("IsLoop") });
             chb_PreMultiplyAlpha.SetBinding(CheckBox.IsCheckedProperty, new Binding() { Source = App.GV, Path = new PropertyPath("PreMultiplyAlpha") });
@@ -125,10 +130,109 @@ namespace SpineViewerWPF
 
         }
 
+        private void tb_PosX_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            TextChange[] changesText = new TextChange[e.Changes.Count];
+            e.Changes.CopyTo(changesText, 0);
+
+            int offset = changesText[0].Offset;
+            int totalCount = changesText[0].AddedLength;
+
+            if (totalCount > 0)
+            {
+                char[] charArray = new char[textBox.Text.Length];
+                textBox.Text.CopyTo(0, charArray, 0, charArray.Length);
+                StringBuilder sbu = new StringBuilder(new string(charArray));
+
+                for (int i = sbu.Length - 1; i >= offset; --i)
+                {
+                    if (charArray[i] < 48 || charArray[i] > 57)
+                    {
+                        sbu = sbu.Remove(i, 1);
+                    }
+                }
+                textBox.Text = sbu.ToString();
+                textBox.Select(offset + totalCount, 0);
+            }
+
+            if (totalCount == 0)
+            {
+                // avoid check when totalCount = 0
+                // probably user just deleting all number when trying to type a new number
+                App.GV.PosX = 0;
+                textBox.Text = "0";
+            }
+            else
+            {
+                float posX;
+                if (float.TryParse(textBox.Text.Trim(), out posX))
+                {
+                    App.GV.PosX = posX;
+                }
+                else
+                {
+                    App.GV.PosX = 2048;
+                    textBox.Text = "2048";
+                    MessageBox.Show("Error Number！");
+                }
+            }
+            
+        }
+
+        private void tb_PosY_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            TextChange[] changesText = new TextChange[e.Changes.Count];
+            e.Changes.CopyTo(changesText, 0);
+
+            int offset = changesText[0].Offset;
+            int totalCount = changesText[0].AddedLength;
+
+            if (totalCount > 0)
+            {
+                char[] charArray = new char[textBox.Text.Length];
+                textBox.Text.CopyTo(0, charArray, 0, charArray.Length);
+                StringBuilder sbu = new StringBuilder(new string(charArray));
+
+                for (int i = sbu.Length - 1; i >= offset; --i)
+                {
+                    if (charArray[i] < 48 || charArray[i] > 57)
+                    {
+                        sbu = sbu.Remove(i, 1);
+                    }
+                }
+                textBox.Text = sbu.ToString();
+                textBox.Select(offset + totalCount, 0);
+            }
+
+            if (totalCount == 0)
+            {
+                // avoid check when totalCount = 0
+                // probably user just deleting all number when trying to type a new number
+                App.GV.PosY = 0;
+                textBox.Text = "0";
+            }
+            else
+            {
+                float posY;
+                if (float.TryParse(textBox.Text.Trim(), out posY))
+                {
+                    App.GV.PosY = posY;
+                }
+                else
+                {
+                    App.GV.PosY = 2048;
+                    textBox.Text = "2048";
+                    MessageBox.Show("Error Number！");
+                }
+            }            
+        }
+
         private void tb_Fps_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-
             TextBox textBox = sender as TextBox;
 
             TextChange[] changesText = new TextChange[e.Changes.Count];
@@ -153,7 +257,14 @@ namespace SpineViewerWPF
                 textBox.Text = sbu.ToString();
                 textBox.Select(offset + totalCount, 0);
             }
-            if (int.TryParse(tb_Fps.Text.Trim(), out int fps))
+
+            // Modified By yanagiragi
+            // Original: if (int.TryParse(tb_Fps.Text.Trim(), out int fps))
+            // I got "CS1525 Invalid expression term 'int'" when using .Net Framework 4.2.6
+            // Instead I declare a varaible as workAround.
+            // # WillFix
+            int fps;
+            if (int.TryParse(tb_Fps.Text.Trim(), out fps))
             {
                 App.GV.Speed = fps;
             }
